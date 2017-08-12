@@ -1,0 +1,24 @@
+{
+    "name": "fiw-db",
+    "version": "0.1.0",
+    "description": "database",
+    "main": "lib/index.js",
+    "repository": "git://github.com/blingz/fiw-db.git",
+    "author": "Blingz",
+    "homepage": "https://github.com/blingz/fiw-db",
+    "license": "MIT",
+    "keywords": [
+        "config",
+        "database",
+        "fibjs"
+    ],
+    "scripts": {
+        "ci": "fibjs test.js"
+    },
+    "ci": {
+        "type": "travis"
+    },
+    "dependencies": {
+        "fib-pool": "^1.2.0"
+    }
+}
