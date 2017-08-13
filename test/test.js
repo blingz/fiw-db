@@ -34,10 +34,40 @@ describe("fiw-db", () => {
 
 
     dbs.execute(`insert into kv (k,v) values(?,?)`, 'abc', 123)
+    dbs.execute(`insert into kv (k,v) values(?,?)`, 'xyz', 'hello')
 
     var one = dbs.queryOne('select k, v from kv where k=?', 'abc')
     assert.equal(123, one.v)
 
+    one = dbs.queryOne('select k, v from kv where k=?', ['xyz'])
+    assert.equal('hello', one.v)
+
+    one = dbs.queryOne('select k, v from kv where k=?', ['xyz'], row => {
+            return {key: row.k, value: row.v}
+          })
+    assert.equal('xyz', one.key)
+    assert.equal('hello', one.value)
+
+    var rs = dbs.execute('select k, v from kv where k=?', 'abc')
+    assert.equal(123, rs[0].v)
+
+    rs = dbs.query('select k, v from kv where k=?', 'abc')
+    assert.equal(123, rs[0].v)
+
+    dbs.conn(conn => {
+      var rs = conn.execute('select k, v from kv where k=?', 'abc')
+      assert.equal(123, rs[0].v)
+    })
+
+    //test pool
+    var pool = dbs.pool()
+    assert.isNotNull(pool)
+    assert.isNotNull(pool.connections)
+    assert.isNotNull(pool.clear)
+    
+    //test cache for name
+    var dbs1 = DBS('test')
+    assert.equal(dbs1, dbs)
   })
 
 })
